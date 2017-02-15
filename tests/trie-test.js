@@ -1,6 +1,9 @@
 import { expect, assert } from "chai";
 import Trie from "../lib/Trie";
 import Node from "../lib/Node";
+import fs from "fs";
+
+let dictionary = fs.readFileSync('/usr/share/dict/words', 'utf-8').trim().split('\n');
 
 describe("Testing the trie constructor", () => {
 
@@ -84,15 +87,35 @@ describe("Testing the trie constructor", () => {
 
   });
 
-  it("trie should be a constructor", () => {
+  it("populate be able to accept arrays and increase the word count", () => {
     let trie = new Trie();
 
-    trie.insert("word");
-    trie.insert("world");
-    trie.insert("worry");
-    trie.insert("test");
-    trie.insert("testing");
+    trie.populate(["test", "test2"]);
+
+    expect(trie.count).to.equal(2);
   });
 
+  it("populate be able to accept arrays and push into tree via insert", () => {
+    let trie = new Trie();
+
+    trie.populate(["test"]);
+
+    expect(trie.root.t).to.have.deep.property("children").
+                        to.have.deep.property("e").
+                        to.have.deep.property("children").
+                        to.have.deep.property("s").
+                        to.have.deep.property("children").
+                        to.have.deep.property("t").
+                        to.have.deep.property("isWord").
+                        to.equal(true);
+  });
+
+  it("populate be able to accept the dictionary in array form and log a word count of 235886", () => {
+    let trie = new Trie();
+
+    trie.populate(dictionary);
+
+    expect(trie.count).to.equal(235886);
+  });
 
 });
