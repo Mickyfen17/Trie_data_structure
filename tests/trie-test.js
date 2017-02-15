@@ -3,7 +3,7 @@ import Trie from "../lib/Trie";
 import Node from "../lib/Node";
 import fs from "fs";
 
-let dictionary = fs.readFileSync('/usr/share/dict/words', 'utf-8').trim().split('\n');
+let dictionary = fs.readFileSync('/usr/share/dict/words', 'utf-8').toLowerCase().trim().split('\n');
 
 describe("Testing the trie constructor", () => {
 
@@ -35,6 +35,22 @@ describe("Testing the trie constructor", () => {
     expect(trie.count).to.equal(0);
     trie.insert("test");
     expect(trie.count).to.equal(1);
+  });
+
+  it("should be able to add a letter and check is it exists in the nodes data key", () => {
+    let trie = new Trie();
+    trie.insert("bob");
+
+    expect(trie.root.b.data).to.equal("b");
+  });
+
+  it("should be able to add a word but check is it exists in the nodes data key", () => {
+    let trie = new Trie();
+    trie.insert("bob");
+
+    expect(trie.root.b.data).to.equal("b");
+    expect(trie.root.b.children.o.data).to.equal("o");
+    expect(trie.root.b.children.o.children.b.data).to.equal("b");
   });
 
   it("should be able to add a letter into the tree", () => {
@@ -87,6 +103,22 @@ describe("Testing the trie constructor", () => {
 
   });
 
+  it.skip("testing suggest", () => {
+    let trie = new Trie();
+    trie.insert("bob");
+    trie.suggest("b");
+  });
+
+  it.skip("testing trie", () => {
+    let trie = new Trie();
+
+    trie.insert("word");
+    trie.insert("world");
+    trie.insert("worry");
+    trie.insert("test");
+    trie.insert("testing");
+  });
+
   it("populate be able to accept arrays and increase the word count", () => {
     let trie = new Trie();
 
@@ -116,6 +148,16 @@ describe("Testing the trie constructor", () => {
     trie.populate(dictionary);
 
     expect(trie.count).to.equal(235886);
+  });
+
+  it("populate be able to accept the dictionary and be able to search for a random word", () => {
+    let trie = new Trie();
+
+    trie.populate(dictionary);
+
+    expect(trie.root.b.children.a.children.l.children.l).
+                          to.have.deep.property("isWord").
+                          to.equal(true);
   });
 
 });
