@@ -14,4 +14,22 @@ describe("Testing the node constructor", () => {
     expect(node).to.be.instanceof(Node);
   });
 
+  it("node data should be able to accept and store a value", () => {
+    let node = new Node("test");
+
+    expect(node.data).to.equal("test");
+  });
+
+  it("node isWord should be false as default", () => {
+    let node = new Node();
+
+    expect(node.isWord).to.equal(false);
+  });
+
+  it("node children should be an object", () => {
+    let node = new Node();
+
+    expect(node.children).to.be.an("object");
+  });
+
 });
