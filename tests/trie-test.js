@@ -41,27 +41,27 @@ describe("Testing the trie constructor", () => {
   it("should be able to add a letter and check is it exists in the nodes data key", () => {
     trie.insert("bob");
 
-    expect(trie.root.b.data).to.equal("b");
+    expect(trie.root.children.b.data).to.equal("b");
   });
 
   it("should be able to add a word but check is it exists in the nodes data key", () => {
     trie.insert("bob");
 
-    expect(trie.root.b.data).to.equal("b");
-    expect(trie.root.b.children.o.data).to.equal("o");
-    expect(trie.root.b.children.o.children.b.data).to.equal("b");
+    expect(trie.root.children.b.data).to.equal("b");
+    expect(trie.root.children.b.children.o.data).to.equal("o");
+    expect(trie.root.children.b.children.o.children.b.data).to.equal("b");
   });
 
   it("should be able to add a letter into the tree", () => {
     trie.insert("a");
 
-    expect(trie.root.a).to.have.deep.property("data", "a");
+    expect(trie.root.children.a).to.have.deep.property("data", "a");
   });
 
   it("should be able to add a 2 letters into the tree", () => {
     trie.insert("ab");
 
-    expect(trie.root.a).to.have.deep.property("children").
+    expect(trie.root.children.a).to.have.deep.property("children").
                         to.have.deep.property("b");
   });
 
@@ -69,7 +69,7 @@ describe("Testing the trie constructor", () => {
     trie.insert("abc");
     trie.insert("abef");
 
-    expect(trie.root.a).to.have.deep.property("children").
+    expect(trie.root.children.a).to.have.deep.property("children").
                         to.have.deep.property("b").
                         to.have.deep.property("children").
                         to.have.keys("c", "e");
@@ -78,7 +78,7 @@ describe("Testing the trie constructor", () => {
   it("should be able to add a word but check when word is incomplete", () => {
     trie.insert("bob");
 
-    expect(trie.root.b).to.have.deep.property("children").
+    expect(trie.root.children.b).to.have.deep.property("children").
                         to.have.deep.property("o").
                         to.have.deep.property("isWord").
                         to.equal(false);
@@ -88,7 +88,7 @@ describe("Testing the trie constructor", () => {
   it("should be able to add a word and set when word is complete", () => {
     trie.insert("bob");
 
-    expect(trie.root.b).to.have.deep.property("children").
+    expect(trie.root.children.b).to.have.deep.property("children").
                         to.have.deep.property("o").
                         to.have.deep.property("children").
                         to.have.deep.property("b").
@@ -97,23 +97,13 @@ describe("Testing the trie constructor", () => {
 
   });
 
-  it.only("suggest should return and array of matched words", () => {
+  it("suggest should return and array of matched words", () => {
     trie.insert("apple");
     trie.insert("applicant");
     trie.insert("application");
     trie.suggest("ap");
 
-    console.log("returned array", trie.suggestArray);
-
     expect(trie.suggestArray).to.deep.equal(["apple", "applicant", "application"]);
-  });
-
-  it.skip("testing trie", () => {
-    trie.insert("word");
-    trie.insert("world");
-    trie.insert("worry");
-    trie.insert("test");
-    trie.insert("testing");
   });
 
   it("populate be able to accept arrays and increase the word count", () => {
@@ -125,7 +115,7 @@ describe("Testing the trie constructor", () => {
   it("populate be able to accept arrays and push into tree via insert", () => {
     trie.populate(["test"]);
 
-    expect(trie.root.t).to.have.deep.property("children").
+    expect(trie.root.children.t).to.have.deep.property("children").
                         to.have.deep.property("e").
                         to.have.deep.property("children").
                         to.have.deep.property("s").
@@ -144,9 +134,23 @@ describe("Testing the trie constructor", () => {
   it("populate be able to accept the dictionary and be able to search for a random word", () => {
     trie.populate(dictionary);
 
-    expect(trie.root.b.children.a.children.l.children.l).
+    expect(trie.root.children.b.children.a.children.l.children.l).
                           to.have.deep.property("isWord").
                           to.equal(true);
+  });
+
+  it("suggest words from the dictionary and be return an array of words", () => {
+    trie.populate(dictionary);
+
+    trie.suggest("piz");
+    expect(trie.suggestArray).to.deep.equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+  });
+
+  it("dictionary should contain word szlachta", () => {
+    trie.populate(dictionary);
+
+    trie.suggest("szl");
+    expect(trie.suggestArray).to.deep.equal(["szlachta"]);
   });
 
 });
