@@ -101,11 +101,11 @@ describe("Testing the trie constructor", () => {
     trie.insert("apple");
     trie.insert("applicant");
     trie.insert("application");
-    trie.suggest("a");
+    trie.suggest("ap");
 
     console.log("returned array", trie.suggestArray);
 
-    expect(trie.suggestArray).to.equal(["apples", "applicant", "application"]);
+    expect(trie.suggestArray).to.deep.equal(["apple", "applicant", "application"]);
   });
 
   it.skip("testing trie", () => {
