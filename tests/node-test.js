@@ -1,13 +1,9 @@
-import { expect, assert } from "chai";
+import { expect } from "chai";
 import Node from "../lib/Node";
 
 describe("Testing the node constructor", () => {
 
-  it("node should be a function", () => {
-    assert.isFunction(Node);
-  });
-
-  it("node should be a constructor", () => {
+  it("an initialized node has the expected default state", () => {
     let node = new Node();
 
     expect(node).to.be.instanceof(Node);

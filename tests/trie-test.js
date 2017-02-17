@@ -1,4 +1,4 @@
-import { expect, assert } from "chai";
+import { expect } from "chai";
 import Trie from "../lib/Trie";
 import fs from "fs";
 
@@ -11,11 +11,7 @@ describe("Testing the trie constructor", () => {
     trie = new Trie();
   });
 
-  it("trie should be a function", () => {
-    assert.isFunction(Trie);
-  });
-
-  it("trie should be a constructor", () => {
+  it("an initialized trie has the expected default state", () => {
 
     expect(trie).to.be.instanceof(Trie);
   });
