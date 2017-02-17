@@ -153,4 +153,98 @@ describe("Testing the trie constructor", () => {
     expect(trie.suggestArray).to.deep.equal(["szlachta"]);
   });
 
+  it("should be able to make a suggestion, select a word from array then populate that word first on the next suggestion", () => {
+    trie.insert("apple");
+    trie.insert("applicant");
+    trie.insert("application");
+
+    trie.suggest("ap");
+    expect(trie.suggestArray).to.deep
+               .equal(["apple", "applicant", "application"]);
+
+    trie.selectWord("ap", "applicant");
+    expect(trie.suggestArray).to.deep
+               .equal(["applicant", "apple", "application"]);
+
+    trie.suggest("ap");
+    expect(trie.suggestArray).to.deep
+               .equal(["applicant", "apple", "application"]);
+
+  });
+
+  it("should be able to make a suggestion, select a word from array then populate that word first. Then make the same suggestion, select another word and move that word to the front", () => {
+    trie.insert("apple");
+    trie.insert("applicant");
+    trie.insert("application");
+
+    trie.suggest("ap");
+    expect(trie.suggestArray).to.deep
+               .equal(["apple", "applicant", "application"]);
+
+    trie.selectWord("ap", "applicant");
+    expect(trie.suggestArray).to.deep
+               .equal(["applicant", "apple", "application"]);
+
+    trie.suggest("ap");
+    expect(trie.suggestArray).to.deep
+               .equal(["applicant", "apple", "application"]);
+
+    trie.selectWord("ap", "application");
+    expect(trie.suggestArray).to.deep
+               .equal(["application", "applicant", "apple"]);
+
+  });
+
+  it("should be able to make a suggestion, select a word from array then populate that word first. Then make a different suggestion and create a new suggest array", () => {
+    trie.insert("apple");
+    trie.insert("applicant");
+    trie.insert("application");
+
+    trie.suggest("ap");
+    expect(trie.suggestArray).to.deep
+               .equal(["apple", "applicant", "application"]);
+
+    trie.selectWord("ap", "applicant");
+    expect(trie.suggestArray).to.deep
+               .equal(["applicant", "apple", "application"]);
+
+    trie.suggest("ap");
+    expect(trie.suggestArray).to.deep
+               .equal(["applicant", "apple", "application"]);
+
+    trie.suggest("app");
+    expect(trie.suggestArray).to.deep
+               .equal(["apple", "applicant", "application"]);
+
+    trie.selectWord("app", "application");
+    expect(trie.suggestArray).to.deep
+               .equal(["application", "apple", "applicant"]);
+
+    trie.suggest("app");
+    expect(trie.suggestArray).to.deep
+               .equal(["application", "apple", "applicant"]);
+
+    trie.suggest("ap");
+    expect(trie.suggestArray).to.deep
+               .equal(["applicant", "apple", "application"]);
+
+  });
+
+  it("should be able to load the dictionary, suggest piz, return and array of matched words, then select a word to move to from of the list for piz suggest", () => {
+    trie.populate(dictionary);
+
+    trie.suggest("piz");
+    expect(trie.suggestArray).to.deep
+               .equal(["pize", "pizza", "pizzeria", "pizzicato", "pizzle"]);
+
+    trie.selectWord("piz", "pizzeria");
+    expect(trie.suggestArray).to.deep
+               .equal(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"]);
+
+    trie.suggest("piz");
+    expect(trie.suggestArray).to.deep
+               .equal(["pizzeria", "pize", "pizza", "pizzicato", "pizzle"]);
+
+  });
+
 });
