@@ -2,7 +2,7 @@ import { expect } from "chai";
 import Trie from "../lib/Trie";
 import fs from "fs";
 
-let dictionary = fs.readFileSync('/usr/share/dict/words', 'utf-8').toLowerCase().trim().split('\n');
+const dictionary = fs.readFileSync('/usr/share/dict/words', 'utf-8').toLowerCase().trim().split('\n');
 
 describe("Testing the trie constructor", () => {
   let trie;
