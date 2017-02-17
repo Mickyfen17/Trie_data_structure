@@ -1,6 +1,5 @@
 import { expect, assert } from "chai";
 import Trie from "../lib/Trie";
-import Node from "../lib/Node";
 import fs from "fs";
 
 let dictionary = fs.readFileSync('/usr/share/dict/words', 'utf-8').toLowerCase().trim().split('\n');
